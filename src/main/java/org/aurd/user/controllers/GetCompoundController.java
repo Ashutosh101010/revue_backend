@@ -18,14 +18,12 @@ import javax.ws.rs.core.MediaType;
 import java.util.ArrayList;
 
 import static org.aurd.MongoService.compounds;
+import static org.aurd.MongoService.reviews;
 
 
 @Path("/getCompound")
 
 public class GetCompoundController {
-
-
-
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
@@ -61,6 +59,7 @@ public class GetCompoundController {
             {
                 mongoCursor = compounds.find().sort(new Document("_id",1)).limit(6).iterator();
             }else {
+
                 mongoCursor = compounds.find(comDocument).sort(new Document("_id",1)).limit(6).iterator();
             }
 
@@ -73,6 +72,8 @@ public class GetCompoundController {
         if(mongoCursor.hasNext()){
             while (mongoCursor.hasNext()){
                 Document document = (Document) mongoCursor.next();
+                document.put("reviewCount",
+                        reviews.countDocuments(new Document("compoundID",document.get("_id"))));
                 CompoundModal compoundModal = new Gson().fromJson(document.toJson(),CompoundModal.class);
                 arrayList.add(compoundModal);
             }

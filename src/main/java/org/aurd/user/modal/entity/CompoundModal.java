@@ -27,6 +27,15 @@ public class CompoundModal {
     double design;
     Position position;
     String category;
+    long reviewCount;
+
+    public long getReviewCount() {
+        return reviewCount;
+    }
+
+    public void setReviewCount(long reviewCount) {
+        this.reviewCount = reviewCount;
+    }
 
     public String getCategory() {
         return category;

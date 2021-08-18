@@ -17,8 +17,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import java.util.ArrayList;
 
-import static org.aurd.MongoService.compounds;
-import static org.aurd.MongoService.favCollection;
+import static org.aurd.MongoService.*;
 
 
 @Path("/getFavorites")
@@ -43,6 +42,9 @@ public class GetFavoritesController {
 
            while(compoundCursor.hasNext()){
                Document compoundDoc = (Document) compoundCursor.next();
+               document.put("reviewCount",
+                       reviews.countDocuments(new Document("compoundID",document.get("_id"))));
+
                CompoundModal compoundModal = new Gson().fromJson(compoundDoc.toJson(),CompoundModal.class);
                compoundList.add(compoundModal);
            }
