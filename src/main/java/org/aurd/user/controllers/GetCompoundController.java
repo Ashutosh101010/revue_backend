@@ -72,9 +72,10 @@ public class GetCompoundController {
         if(mongoCursor.hasNext()){
             while (mongoCursor.hasNext()){
                 Document document = (Document) mongoCursor.next();
-                document.put("reviewCount",
-                        reviews.countDocuments(new Document("compoundID",document.get("_id"))));
+                long count = reviews.countDocuments(new Document("compoundID",document.get("_id").toString()));
                 CompoundModal compoundModal = new Gson().fromJson(document.toJson(),CompoundModal.class);
+                compoundModal.setReviewCount(count);
+
                 arrayList.add(compoundModal);
             }
             getCompoundResponse.setStatus(Constants.STATUS_SUCCESS);

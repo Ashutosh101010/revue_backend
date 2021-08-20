@@ -18,6 +18,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import static org.aurd.MongoService.compounds;
+import static org.aurd.MongoService.reviews;
 
 
 @Path("/getCompoundDetails")
@@ -37,7 +38,12 @@ public class GetCompoundDetailsController {
 
             getCompoundDetailResponse.setStatus(Constants.STATUS_SUCCESS);
             getCompoundDetailResponse.setErrorCode(Constants.SUCCESS_CODE);
+
+            long count = reviews.countDocuments(new Document("compoundID",doc.get("_id").toString()));
+
             CompoundModal compoundModal = new Gson().fromJson(doc.toJson(),CompoundModal.class);
+
+
             getCompoundDetailResponse.setCompoundModal(compoundModal);
             return getCompoundDetailResponse;
         }else{
