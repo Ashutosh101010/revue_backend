@@ -27,13 +27,58 @@ public class CompoundModal {
     double design;
     Position position;
     String category;
-    long reviewCount;
+    int reviewCount;
+    double excellent;
+    double veryGood;
+    double average;
+    double poor;
+    double veryPoor;
 
-    public long getReviewCount() {
+    public double getExcellent() {
+        return excellent;
+    }
+
+    public void setExcellent(double excellent) {
+        this.excellent = excellent;
+    }
+
+    public double getVeryGood() {
+        return veryGood;
+    }
+
+    public void setVeryGood(double veryGood) {
+        this.veryGood = veryGood;
+    }
+
+    public double getAverage() {
+        return average;
+    }
+
+    public void setAverage(double average) {
+        this.average = average;
+    }
+
+    public double getPoor() {
+        return poor;
+    }
+
+    public void setPoor(double poor) {
+        this.poor = poor;
+    }
+
+    public double getVeryPoor() {
+        return veryPoor;
+    }
+
+    public void setVeryPoor(double veryPoor) {
+        this.veryPoor = veryPoor;
+    }
+
+    public int getReviewCount() {
         return reviewCount;
     }
 
-    public void setReviewCount(long reviewCount) {
+    public void setReviewCount(int reviewCount) {
         this.reviewCount = reviewCount;
     }
 
