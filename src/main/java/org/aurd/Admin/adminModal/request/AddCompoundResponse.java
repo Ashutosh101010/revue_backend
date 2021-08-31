@@ -1,4 +1,4 @@
-package org.aurd.Admin.adminModal;
+package org.aurd.Admin.adminModal.request;
 
 public class AddCompoundResponse {
     String message ;

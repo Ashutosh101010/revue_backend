@@ -22,8 +22,7 @@ public class LoginController{
 
     public LoginResponse login(LoginRequest loginRequest){
         UserModal userModal = new Gson().fromJson(new Gson().toJson(loginRequest),UserModal.class);
-        LoginResponse loginResponse = userModal.login();
-        return loginResponse;
+        return userModal.login();
 
     }
 

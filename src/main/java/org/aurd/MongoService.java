@@ -39,6 +39,7 @@ public class MongoService {
     public static  MongoCollection likeUnlikeCollection;
     public static MongoCollection favCollection;
     public static MongoCollection authCollection;
+    public static MongoCollection adminCollection;
     public static AmazonS3 s3;
 
 
@@ -61,6 +62,7 @@ public class MongoService {
         likeUnlikeCollection = mongoDatabase.getCollection("Like");
         favCollection = mongoDatabase.getCollection("Favorite");
         authCollection=mongoDatabase.getCollection("AuthCollection");
+        adminCollection=mongoDatabase.getCollection("Admin");
 
         authCollection.createIndex(Indexes.ascending("date"),new IndexOptions().expireAfter(3L, TimeUnit.MINUTES));
 

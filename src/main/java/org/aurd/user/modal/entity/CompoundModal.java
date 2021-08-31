@@ -2,7 +2,7 @@ package org.aurd.user.modal.entity;
 
 import com.google.gson.Gson;
 import com.google.gson.annotations.JsonAdapter;
-import org.aurd.Admin.adminModal.AddCompoundResponse;
+import org.aurd.Admin.adminModal.request.AddCompoundResponse;
 import org.aurd.user.constant.Constants;
 import org.aurd.user.utils.ObjectAdapter;
 import org.bson.Document;

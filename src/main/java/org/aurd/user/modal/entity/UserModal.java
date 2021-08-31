@@ -11,6 +11,7 @@ import org.bson.Document;
 
 import java.io.Serializable;
 
+import static org.aurd.MongoService.adminCollection;
 import static org.aurd.MongoService.users;
 
 public class UserModal implements Serializable {
@@ -24,6 +25,15 @@ public class UserModal implements Serializable {
     String email;
     String password;
     String mobilenumber;
+    int reviewCount;
+
+    public int getReviewCount() {
+        return reviewCount;
+    }
+
+    public void setReviewCount(int reviewCount) {
+        this.reviewCount = reviewCount;
+    }
 
     public UserModal(String userId) {
         this._id=userId;
