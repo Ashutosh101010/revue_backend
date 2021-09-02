@@ -42,6 +42,21 @@ public class GetCompoundController {
             comDocument.append("amenities",new Document("$all",getCompoundRequest.getAmenities()));
         }
 
+        if(getCompoundRequest.getSearch()!=null && !getCompoundRequest.getSearch().isEmpty())
+        {
+            Document queryDoc1 = new Document();
+            queryDoc1.append("compoundname",new Document().append("$regex",getCompoundRequest.getSearch()).append("$options","i"));
+
+            Document queryDoc2 = new Document();
+            queryDoc2.append("address",new Document().append("$regex",getCompoundRequest.getSearch()).append("$options","i"));
+
+            Document searchDoc= new Document();
+            ArrayList docArrayList= new ArrayList();
+            docArrayList.add(queryDoc1);
+            docArrayList.add(queryDoc2);
+
+            comDocument.append("$or",docArrayList);
+        }
         if(getCompoundRequest.getRadius()!=null && getCompoundRequest.getRadius()<25)
         {
             comDocument.append("position",
@@ -50,18 +65,42 @@ public class GetCompoundController {
                     .append("$maxDistance",getCompoundRequest.getRadius()*1000)));
         }
 
-
+int compoundCount=Math.toIntExact(compounds.countDocuments(comDocument));
         if(getCompoundRequest.getLastObjectID() !=null && !getCompoundRequest.getLastObjectID().isEmpty()){
             comDocument.append("_id",new Document("$gt",new ObjectId(getCompoundRequest.getLastObjectID())));
-           mongoCursor =  compounds.find(comDocument).sort(new Document("_id",1)).limit(6).cursor();
-        }else{
+            if(getCompoundRequest.getPage()>0)
+            {
+                mongoCursor =  compounds.find(comDocument).sort(new Document("_id",1)).skip(Constants.DOCUMENT_NUMBER_PAGE * getCompoundRequest.getPage()).limit(Constants.DOCUMENT_NUMBER_PAGE).cursor();
+
+            }
+            else{
+                mongoCursor =  compounds.find(comDocument).sort(new Document("_id",1)).limit(Constants.DOCUMENT_NUMBER_PAGE).cursor();
+
+            }
+                }else{
             if(comDocument.isEmpty())
             {
-                mongoCursor = compounds.find().sort(new Document("_id",1)).limit(6).iterator();
-            }else {
+                if(getCompoundRequest.getPage()>0)
+                {
+                    mongoCursor=compounds.find().sort(new Document("_id",1)).skip(Constants.DOCUMENT_NUMBER_PAGE * getCompoundRequest.getPage()).limit(Constants.DOCUMENT_NUMBER_PAGE).iterator();
+                }
+                else{
+                    mongoCursor = compounds.find().sort(new Document("_id",1)).limit(Constants.DOCUMENT_NUMBER_PAGE).iterator();
 
-                mongoCursor = compounds.find(comDocument).sort(new Document("_id",1)).limit(6).iterator();
-            }
+                }
+                   }else {
+
+                if(getCompoundRequest.getPage()>0)
+                {
+                    mongoCursor = compounds.find(comDocument).sort(new Document("_id",1)).skip(Constants.DOCUMENT_NUMBER_PAGE * getCompoundRequest.getPage()).limit(Constants.DOCUMENT_NUMBER_PAGE).iterator();
+
+                }
+                else{
+                    mongoCursor = compounds.find(comDocument).sort(new Document("_id",1)).limit(Constants.DOCUMENT_NUMBER_PAGE).iterator();
+
+                }
+
+                         }
 
         }
 
@@ -69,6 +108,7 @@ public class GetCompoundController {
 
         ArrayList arrayList = new ArrayList();
         GetCompoundResponse getCompoundResponse = new GetCompoundResponse();
+
         if(mongoCursor.hasNext()){
             while (mongoCursor.hasNext()){
                 Document document = (Document) mongoCursor.next();
@@ -78,6 +118,7 @@ public class GetCompoundController {
 
                 arrayList.add(compoundModal);
             }
+            getCompoundResponse.setCount(compoundCount);
             getCompoundResponse.setStatus(Constants.STATUS_SUCCESS);
             getCompoundResponse.setMessage(Constants.GET_COMPOUNDLIST_SUCCESS);
             getCompoundResponse.setCompoundList(arrayList);

@@ -9,6 +9,24 @@ public class GetCompoundRequest
     ArrayList amenities;
     Integer radius;
     ArrayList<Double> coordinates;
+    String search;
+    int page=0;
+
+    public int getPage() {
+        return page;
+    }
+
+    public void setPage(int page) {
+        this.page = page;
+    }
+
+    public String getSearch() {
+        return search;
+    }
+
+    public void setSearch(String search) {
+        this.search = search;
+    }
 
     public ArrayList<Double> getCoordinates() {
         return coordinates;

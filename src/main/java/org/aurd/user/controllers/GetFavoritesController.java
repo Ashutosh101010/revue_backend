@@ -42,10 +42,11 @@ public class GetFavoritesController {
 
            while(compoundCursor.hasNext()){
                Document compoundDoc = (Document) compoundCursor.next();
-               document.put("reviewCount",
-                       reviews.countDocuments(new Document("compoundID",document.get("_id"))));
-
+               System.out.println(compoundDoc.get("_id").toString());
+               Long count = reviews.countDocuments(new Document("compoundID",document.get("_id").toString()));
+               System.out.println("Review Count "+count);
                CompoundModal compoundModal = new Gson().fromJson(compoundDoc.toJson(),CompoundModal.class);
+               compoundModal.setReviewCount(count.intValue());
                compoundList.add(compoundModal);
            }
 

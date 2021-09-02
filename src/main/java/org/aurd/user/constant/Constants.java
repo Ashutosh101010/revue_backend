@@ -66,5 +66,11 @@ public class Constants {
 
 
 
+    public static  int DOCUMENT_NUMBER_PAGE=10;
+
+    public static int RECOMMENDED_COMPOUNDS_RADIUS=25;
+    public static double RECOMMENDED_COMPOUNDS_DEFAULT_LATITUDE=25.3548;
+    public static double RECOMMENDED_COMPOUNDS_DEFAULT_LONGITUDE=25;
+
 
 }

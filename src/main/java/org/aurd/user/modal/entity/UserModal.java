@@ -3,15 +3,17 @@ package org.aurd.user.modal.entity;
 import com.google.gson.Gson;
 import com.google.gson.annotations.JsonAdapter;
 import com.mongodb.client.MongoCursor;
+import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.codec.digest.HmacUtils;
 import org.aurd.user.constant.Constants;
 import org.aurd.user.modal.response.LoginResponse;
 import org.aurd.user.modal.response.RegisterResponse;
 import org.aurd.user.utils.ObjectAdapter;
 import org.bson.Document;
+import org.bson.types.ObjectId;
 
 import java.io.Serializable;
 
-import static org.aurd.MongoService.adminCollection;
 import static org.aurd.MongoService.users;
 
 public class UserModal implements Serializable {
@@ -25,6 +27,8 @@ public class UserModal implements Serializable {
     String email;
     String password;
     String mobilenumber;
+    String token;
+    boolean isLoggedIn;
     int reviewCount;
 
     public int getReviewCount() {
@@ -33,6 +37,22 @@ public class UserModal implements Serializable {
 
     public void setReviewCount(int reviewCount) {
         this.reviewCount = reviewCount;
+    }
+
+    public boolean isLoggedIn() {
+        return isLoggedIn;
+    }
+
+    public void setLoggedIn(boolean loggedIn) {
+        isLoggedIn = loggedIn;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 
     public UserModal(String userId) {
@@ -124,6 +144,11 @@ public class UserModal implements Serializable {
                loginResponse.setMessage(Constants.MESSAGE_LOGIN_SUCCESS);
                loginResponse.setStatus(Constants.STATUS_SUCCESS);
                loginResponse.setErrorCode(Constants.SUCCESS_LOGIN_CODE);
+               Document update=new Document();
+               update.append("token",DigestUtils.sha3_256Hex((doc.get("_id").toString())));
+               update.append("isLoggedIn",true);
+
+               users.findOneAndUpdate(new Document("_id",doc.get("_id")),new Document("$set",update));
                UserModal userModal=new Gson().fromJson(doc.toJson(),UserModal.class);
                loginResponse.setUser(userModal);
                return loginResponse;

@@ -7,7 +7,15 @@ public class GetCompoundResponse {
     String message;
     int fetchCode;
     ArrayList compoundList = new ArrayList();
+    int count;
 
+    public int getCount() {
+        return count;
+    }
+
+    public void setCount(int count) {
+        this.count = count;
+    }
 
     public int getFetchCode() {
         return fetchCode;
