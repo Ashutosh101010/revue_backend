@@ -1,9 +1,15 @@
 package org.aurd.Admin.adminModal.entity;
 
+import com.google.gson.Gson;
 import com.google.gson.annotations.JsonAdapter;
+import com.mongodb.client.MongoCursor;
+import org.aurd.user.modal.entity.ReviewModal;
 import org.aurd.user.utils.ObjectAdapter;
+import org.bson.Document;
 
 import java.util.ArrayList;
+
+import static org.aurd.MongoService.reviews;
 
 public class AdminReviewModal {
     @JsonAdapter(ObjectAdapter.class)
@@ -187,5 +193,19 @@ public class AdminReviewModal {
 
     public void setCompoundName(String compoundName) {
         this.compoundName = compoundName;
+    }
+
+
+    public static  ArrayList getAllReviews(String cID){
+        Document document = new Document();
+        document.append("compoundID",cID);
+        ArrayList arrayList = new ArrayList();
+        MongoCursor mongoCursor = reviews.find(document).iterator();
+        while (mongoCursor.hasNext()){
+            Document reviewDoc = (Document) mongoCursor.next();
+            ReviewModal reviewModal = new Gson().fromJson(reviewDoc.toJson(),ReviewModal.class);
+            arrayList.add(reviewModal);
+        }
+        return arrayList;
     }
 }

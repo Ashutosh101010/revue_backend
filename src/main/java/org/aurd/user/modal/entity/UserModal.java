@@ -30,6 +30,7 @@ public class UserModal implements Serializable {
     String token;
     boolean isLoggedIn;
     int reviewCount;
+    boolean status;
 
     public int getReviewCount() {
         return reviewCount;
@@ -105,6 +106,14 @@ public class UserModal implements Serializable {
 
     public void setMobilenumber(String mobilenumber) {
         this.mobilenumber = mobilenumber;
+    }
+
+    public boolean isStatus() {
+        return status;
+    }
+
+    public void setStatus(boolean status) {
+        this.status = status;
     }
 
     public RegisterResponse saveUserToDB(){
