@@ -25,6 +25,7 @@ public class ReviewModal {
     String review;
     String floorplan;
     String price;
+    int status;
     double rating;
     ArrayList<String> cons;
     ArrayList<String> pros;
@@ -32,6 +33,7 @@ public class ReviewModal {
     int bathRooms;
     String userID;
     double facility;
+
     double location;
     double value;
     double management;
@@ -40,6 +42,13 @@ public class ReviewModal {
 //    @JsonAdapter(LongAdapter.class)
     Long timestamp;
     String compoundName;
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
 
     public String getCompoundName() {
         return compoundName;

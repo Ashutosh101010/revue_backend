@@ -32,6 +32,8 @@ public class GetPropertiesController {
             Document doc = (Document) cursor.next();
             PropertyModal propertyModal = gson.fromJson(doc.toJson(),PropertyModal.class);
             ArrayList reviewList = ReviewModal.getAllReviews(propertyModal.get_id());
+            int count = Math.toIntExact(reviews.countDocuments(new Document("compoundID", propertyModal.get_id())));
+            propertyModal.setReviewCount(count);
             propertyModal.setReviews(reviewList);
             arrayList.add(propertyModal);
         }

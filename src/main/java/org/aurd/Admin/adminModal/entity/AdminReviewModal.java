@@ -19,6 +19,7 @@ public class AdminReviewModal {
     String review;
     String floorplan;
     String price;
+    int status;
     double rating;
     ArrayList<String> cons;
     ArrayList<String> pros;
@@ -34,6 +35,14 @@ public class AdminReviewModal {
     //    @JsonAdapter(LongAdapter.class)
     Long timestamp;
     String compoundName;
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
 
     public String get_id() {
         return _id;

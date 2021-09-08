@@ -13,6 +13,7 @@ public class PropertyModal {
     String address;
     String description;
     Object position;
+    int reviewCount;
     String category;
     double facility;
     double location;
@@ -22,6 +23,14 @@ public class PropertyModal {
     double rating;
     ArrayList<String> images;
     Object reviews;
+
+    public int getReviewCount() {
+        return reviewCount;
+    }
+
+    public void setReviewCount(int reviewCount) {
+        this.reviewCount = reviewCount;
+    }
 
     public Object getReviews() {
         return reviews;

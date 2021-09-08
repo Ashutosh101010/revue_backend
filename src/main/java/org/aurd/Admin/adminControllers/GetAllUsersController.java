@@ -22,7 +22,7 @@ public class GetAllUsersController {
     @GET
 //    @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public GetAllUsersResponse getAllUsers(GetAllUsersRequest request){
+    public GetAllUsersResponse getAllUsers(){
         ArrayList<UserModal> arrayList =new ArrayList();
         Gson gson =new Gson();
         Document findDoc = new Document();
