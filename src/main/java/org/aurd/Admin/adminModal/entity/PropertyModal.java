@@ -23,6 +23,15 @@ public class PropertyModal {
     double rating;
     ArrayList<String> images;
     Object reviews;
+    String activeStatus;
+
+    public String getActiveStatus() {
+        return activeStatus;
+    }
+
+    public void setActiveStatus(String activeStatus) {
+        this.activeStatus = activeStatus;
+    }
 
     public int getReviewCount() {
         return reviewCount;
