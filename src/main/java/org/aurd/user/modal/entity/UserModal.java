@@ -158,6 +158,14 @@ public class UserModal implements Serializable {
                loginResponse.setErrorCode(5);
                return loginResponse;
            }
+
+
+           if(doc.containsKey("status") && !doc.getBoolean("status")){
+               loginResponse.setMessage("Account is inactive");
+               loginResponse.setStatus(Constants.STATUS_FAIL);
+               loginResponse.setErrorCode(6);
+               return loginResponse;
+           }
            if(doc.containsKey("password")&&doc.getString("password").equals(password)){
                loginResponse.setMessage(Constants.MESSAGE_LOGIN_SUCCESS);
                loginResponse.setStatus(Constants.STATUS_SUCCESS);

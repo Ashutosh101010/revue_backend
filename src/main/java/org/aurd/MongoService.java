@@ -42,6 +42,7 @@ public class MongoService {
     public static MongoCollection adminCollection;
     public static MongoCollection userPropertyCollection;
     public static AmazonS3 s3;
+    public static MongoCollection metaDataCollection;
 
 
 
@@ -67,6 +68,9 @@ public class MongoService {
         userPropertyCollection=mongoDatabase.getCollection("userPropertyCollection");
 
         authCollection.createIndex(Indexes.ascending("date"),new IndexOptions().expireAfter(3L, TimeUnit.MINUTES));
+        metaDataCollection = mongoDatabase.getCollection("metaData");
+
+
 
         final String s3Endpoint = "https://s3.wasabisys.com";
         final String region = "us-east-1";

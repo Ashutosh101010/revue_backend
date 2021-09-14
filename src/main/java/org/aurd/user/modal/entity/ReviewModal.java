@@ -215,10 +215,12 @@ public class ReviewModal {
     public static  ArrayList getAllReviews(String cID){
         Document document = new Document();
         document.append("compoundID",cID);
+        document.append("status",1);
         ArrayList arrayList = new ArrayList();
         MongoCursor mongoCursor = reviews.find(document).iterator();
         while (mongoCursor.hasNext()){
           Document reviewDoc = (Document) mongoCursor.next();
+
           ReviewModal reviewModal = new Gson().fromJson(reviewDoc.toJson(),ReviewModal.class);
           arrayList.add(reviewModal);
         }
