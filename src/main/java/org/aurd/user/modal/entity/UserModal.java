@@ -116,28 +116,30 @@ public class UserModal implements Serializable {
         this.status = status;
     }
 
-    public RegisterResponse saveUserToDB(){
-        Document document = new Document();
-        document.append("email",email);
-       boolean userExist =  users.find(document).cursor().hasNext();
-
-       if(userExist){
-           RegisterResponse registerResponse=new RegisterResponse();
-           registerResponse.setStatus(Constants.STATUS_FAIL);
-           registerResponse.setMessage(Constants.REGISTER_FAILED_ALREADY_EXIST);
-           registerResponse.setErrorCode(Constants.ERROR_CODE);
-           return registerResponse;
-       }else{
-           Document doc = Document.parse(new Gson().toJson(UserModal.class));
-           System.out.println(doc.toJson());
-           users.insertOne(doc);
-           RegisterResponse registerResponse = new RegisterResponse();
-           registerResponse.setStatus(Constants.STATUS_SUCCESS);
-           registerResponse.setMessage(Constants.MESSAGE_REGISTRATION_SUCCESS);
-           registerResponse.setErrorCode(Constants.SUCCESS_REGISTER_CODE);
-           return registerResponse;
-       }
-    }
+//    public RegisterResponse saveUserToDB(){
+//        Document document = new Document();
+//        document.append("email",email);
+//       MongoCursor cursor =  users.find(document).cursor();
+//
+//       if(cursor.hasNext()){
+//
+//
+//           RegisterResponse registerResponse=new RegisterResponse();
+//           registerResponse.setStatus(Constants.STATUS_FAIL);
+//           registerResponse.setMessage(Constants.REGISTER_FAILED_ALREADY_EXIST);
+//           registerResponse.setErrorCode(Constants.ERROR_CODE);
+//           return registerResponse;
+//       }else{
+//           Document doc = Document.parse(new Gson().toJson(UserModal.class));
+//           System.out.println(doc.toJson());
+//           users.insertOne(doc);
+//           RegisterResponse registerResponse = new RegisterResponse();
+//           registerResponse.setStatus(Constants.STATUS_SUCCESS);
+//           registerResponse.setMessage(Constants.MESSAGE_REGISTRATION_SUCCESS);
+//           registerResponse.setErrorCode(Constants.SUCCESS_REGISTER_CODE);
+//           return registerResponse;
+//       }
+//    }
 
 
     public LoginResponse login(){
@@ -149,6 +151,13 @@ public class UserModal implements Serializable {
 
        if(mongoCursor.hasNext()){
            Document doc = (Document) mongoCursor.next();
+           if(doc.containsKey("verified")&&!doc.getBoolean("verified"))
+           {
+               loginResponse.setMessage("Email not verified");
+               loginResponse.setStatus(Constants.STATUS_FAIL);
+               loginResponse.setErrorCode(5);
+               return loginResponse;
+           }
            if(doc.containsKey("password")&&doc.getString("password").equals(password)){
                loginResponse.setMessage(Constants.MESSAGE_LOGIN_SUCCESS);
                loginResponse.setStatus(Constants.STATUS_SUCCESS);

@@ -66,6 +66,7 @@ public class Constants {
 
 
 
+
     public static  int DOCUMENT_NUMBER_PAGE=10;
 
     public static int RECOMMENDED_COMPOUNDS_RADIUS=25;
