@@ -65,7 +65,7 @@ public class AddCompoundController {
         compoundModal.setAddress(addCompoundRequest.getAddress());
         compoundModal.setDescription(addCompoundRequest.getDescription());
 //        compoundModal.setAmenities(amenityList);
-        compoundModal.setCategory(addCompoundRequest.getType());
+//        compoundModal.setCategory(addCompoundRequest.getType());
         compoundModal.setPosition(positionModal);
 
         AddCompoundResponse addCompoundResponse = CompoundModal.addCompoundToDB();

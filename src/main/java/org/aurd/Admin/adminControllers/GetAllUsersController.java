@@ -80,12 +80,11 @@ public class GetAllUsersController {
 
     }
 
-
+// to change the user status
     @POST
     @Path("{userId}/{status}")
     @Produces(MediaType.APPLICATION_JSON)
     public UpdateUserStatusResponse updateUserStatusResponse(@PathParam("status") boolean status, @PathParam("userId") String userId){
-//        UserModal userModal = new Gson().fromJson(new Gson().toJson(),UserModal.class);
         UpdateUserStatusResponse userStatusResponse = new UpdateUserStatusResponse();
         Document doc = new Document("status", status);
         Document findDoc = new Document("_id", new ObjectId(userId));
