@@ -9,6 +9,15 @@ public class GetAllUsersResponse {
     int errorCode;
     boolean status;
     ArrayList<UserModal> users  =new ArrayList<UserModal>();
+    int userCount;
+
+    public int getUserCount() {
+        return userCount;
+    }
+
+    public void setUserCount(int userCount) {
+        this.userCount = userCount;
+    }
 
     public void setMessage(String message) {
         this.message = message;

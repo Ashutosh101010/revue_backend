@@ -6,6 +6,7 @@ import org.aurd.Admin.adminModal.entity.AdminReviewModal;
 import org.aurd.Admin.adminModal.request.GetReviewRequest;
 import org.aurd.Admin.adminModal.response.GetReviewResponse;
 import org.aurd.Admin.adminModal.response.UpdateReviewStatusResponse;
+import org.aurd.user.constant.Constants;
 import org.aurd.user.modal.entity.ReviewModal;
 import org.aurd.user.modal.response.GetAllReviewsResponse;
 import org.bson.Document;
@@ -29,18 +30,70 @@ public class GetReviewsController {
         Gson gson = new Gson();
         Document findDoc = new Document();
         MongoCursor cursor;
-        if(request.getReviewStatus()!=null && !request.getReviewStatus().isEmpty()){
-//            findDoc.append("_id",new Document("$gt",new ObjectId(request.getReviewStatus())));
-            findDoc.append("status", request.getReviewStatus());
-            cursor = reviews.find(findDoc).sort(new Document("_id",1)).cursor();
-        }else{
-            if(findDoc.isEmpty()){
-                cursor = reviews.find().sort(new Document("_id",1)).iterator();
+        if(request.getLastObjectID()!=null && !request.getLastObjectID().isEmpty()){
+            findDoc.append("_id",new Document("$gt",new ObjectId(request.getLastObjectID())));
+            if(request.getPageCount()>0)
+            {
+                cursor =  compounds.find(findDoc).sort(new Document("_id",1)).
+                        skip(Constants.DOCUMENT_NUMBER_PAGE * request.getPageCount()).
+                        limit(Constants.DOCUMENT_NUMBER_PAGE).cursor();
 
-            }else{
-                cursor = reviews.find(findDoc).sort(new Document("_id",1)).iterator();
             }
+            else{
+                cursor =  compounds.find(findDoc).sort(new Document("_id",1)).
+                        limit(Constants.DOCUMENT_NUMBER_PAGE).cursor();
+
+            }
+        }else {
+            if(request.getReviewStatus()!=null && !request.getReviewStatus().isEmpty()){
+//            findDoc.append("_id",new Document("$gt",new ObjectId(request.getReviewStatus())));
+                findDoc.append("status", request.getReviewStatus());
+                cursor = reviews.find(findDoc).sort(new Document("_id",1)).cursor();
+            }
+            if(findDoc.isEmpty())
+            {
+                if(request.getPageCount()>0)
+                {
+                    cursor=compounds.find().sort(new Document("_id",1)).
+                            skip(Constants.DOCUMENT_NUMBER_PAGE * request.getPageCount()).limit(Constants.DOCUMENT_NUMBER_PAGE).iterator();
+                }
+                else{
+                    cursor = compounds.find().sort(new Document("_id",1)).
+                            limit(Constants.DOCUMENT_NUMBER_PAGE).iterator();
+
+                }
+            }else {
+                if(request.getPageCount()>0)
+                {
+                    cursor = compounds.find(findDoc).sort(new Document("_id",1)).
+                            skip(Constants.DOCUMENT_NUMBER_PAGE * request.getPageCount()).
+                            limit(Constants.DOCUMENT_NUMBER_PAGE).iterator();
+
+                }
+                else{
+                    cursor = compounds.find(findDoc).sort(new Document("_id",1)).
+                            limit(Constants.DOCUMENT_NUMBER_PAGE).iterator();
+
+                }
+
+            }
+
         }
+
+
+//        if(request.getReviewStatus()!=null && !request.getReviewStatus().isEmpty()){
+////            findDoc.append("_id",new Document("$gt",new ObjectId(request.getReviewStatus())));
+//            findDoc.append("status", request.getReviewStatus());
+//            cursor = reviews.find(findDoc).sort(new Document("_id",1)).cursor();
+//        }else{
+//            if(findDoc.isEmpty()){
+//                cursor = reviews.find().sort(new Document("_id",1)).iterator();
+//
+//            }else{
+//                cursor = reviews.find(findDoc).sort(new Document("_id",1)).iterator();
+//            }
+//        }
+//
 
         while(cursor.hasNext()){
             Document doc = (Document) cursor.next();

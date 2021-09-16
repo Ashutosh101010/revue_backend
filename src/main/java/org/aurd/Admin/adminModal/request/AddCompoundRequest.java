@@ -15,7 +15,8 @@ public class AddCompoundRequest {
 
     @FormParam("amenities")
     @PartType(MediaType.TEXT_PLAIN)
-    ArrayList amenities = new ArrayList();
+    String amenities;
+
     @FormParam("compoundname")
     @PartType(MediaType.TEXT_PLAIN)
     String compoundname;
@@ -62,11 +63,11 @@ public class AddCompoundRequest {
         this.position = position;
     }
 
-    public ArrayList getAmenities() {
+    public String getAmenities() {
         return amenities;
     }
 
-    public void setAmenities(ArrayList amenities) {
+    public void setAmenities(String amenities) {
         this.amenities = amenities;
     }
 

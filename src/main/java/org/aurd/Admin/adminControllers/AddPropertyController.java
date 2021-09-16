@@ -1,4 +1,4 @@
-package org.aurd.user.controllers;
+package org.aurd.Admin.adminControllers;
 
 
 import com.amazonaws.services.s3.model.ObjectMetadata;
@@ -32,13 +32,14 @@ import java.util.Map;
 import static org.aurd.MongoService.compounds;
 import static org.aurd.MongoService.s3;
 
-@Path("/addProperty")
+@Path("/admin/addProperty")
 public class AddPropertyController {
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     public AddPropertyResponse addCompoundResponse(@MultipartForm MultipartFormDataInput inputRequest){
 
+        System.out.println(inputRequest.getFormDataMap());
         AddPropertyResponse addPropertyResponse = null;
         try{
             Map<String, List<InputPart>> input = inputRequest.getFormDataMap();
@@ -53,7 +54,10 @@ public class AddPropertyController {
             compoundRequest.setValue(0);
             compoundRequest.setDesign(0);
             compoundRequest.setRating(0);
+            compoundRequest.setAmenities(input.get("amenities").get(0).getBodyAsString());
 //            compoundRequest.setPosition(in);
+
+            System.out.println(input.get("amenities").get(0).getBodyAsString());
 
             List<InputPart> list=input.get("imageData");
 
@@ -108,8 +112,10 @@ public class AddPropertyController {
                 pList.add(amenitiesArray.get(i));
             }
 
+            System.out.println(pList);
             compoundModal.setCompoundname(compoundRequest.getCompoundname());
             compoundModal.setAddress(compoundRequest.getAddress());
+            compoundModal.setAmenities(pList);
 
             Document document = Document.parse(new Gson().toJson(compoundModal));
             compounds.insertOne(document);

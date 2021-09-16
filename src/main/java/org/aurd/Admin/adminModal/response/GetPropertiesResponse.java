@@ -11,6 +11,15 @@ public class GetPropertiesResponse {
     String message;
     String errorDescription;
     ArrayList<PropertyModal> propertyModals;
+    int count;
+
+    public int getCount() {
+        return count;
+    }
+
+    public void setCount(int count) {
+        this.count = count;
+    }
 
     public boolean isStatus() {
         return status;

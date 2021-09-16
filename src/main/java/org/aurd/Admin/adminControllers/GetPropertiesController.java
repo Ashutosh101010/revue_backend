@@ -6,6 +6,7 @@ import com.mongodb.client.MongoCursor;
 import org.aurd.Admin.adminModal.entity.PropertyModal;
 import org.aurd.Admin.adminModal.request.GetPropertiesRequest;
 import org.aurd.Admin.adminModal.response.GetPropertiesResponse;
+import org.aurd.user.constant.Constants;
 import org.aurd.user.modal.entity.ReviewModal;
 import org.bson.Document;
 import org.bson.types.ObjectId;
@@ -23,14 +24,57 @@ import static org.aurd.MongoService.reviews;
     public class GetPropertiesController {
 
 
-    @GET
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public GetPropertiesResponse getPropertiesResponse(){
+    public GetPropertiesResponse getPropertiesResponse(GetPropertiesRequest request){
         ArrayList<PropertyModal> arrayList =new ArrayList();
         Gson gson =new Gson();
         Document findDoc = new Document();
         MongoCursor cursor;
-        cursor = compounds.find().sort(new Document("_id",1)).iterator();
+
+        int compoundCount=Math.toIntExact(compounds.countDocuments(findDoc));
+        if(request.getPropertyId() !=null && !request.getPropertyId().isEmpty()){
+            findDoc.append("_id",new Document("$gt",new ObjectId(request.getPropertyId())));
+            if(request.getPage()>0)
+            {
+                cursor =  compounds.find(findDoc).sort(new Document("_id",1)).skip(Constants.DOCUMENT_NUMBER_PAGE * request.getPage()).limit(Constants.DOCUMENT_NUMBER_PAGE).cursor();
+
+            }
+            else{
+                cursor =  compounds.find(findDoc).sort(new Document("_id",1)).limit(Constants.DOCUMENT_NUMBER_PAGE).cursor();
+
+            }
+        }else{
+            if(findDoc.isEmpty())
+            {
+                if(request.getPage()>0)
+                {
+                    cursor=compounds.find().sort(new Document("_id",1)).skip(Constants.DOCUMENT_NUMBER_PAGE * request.getPage()).limit(Constants.DOCUMENT_NUMBER_PAGE).iterator();
+                }
+                else{
+                    cursor = compounds.find().sort(new Document("_id",1)).limit(Constants.DOCUMENT_NUMBER_PAGE).iterator();
+
+                }
+            }else {
+
+                if(request.getPage()>0)
+                {
+                    cursor = compounds.find(findDoc).sort(new Document("_id",1)).skip(Constants.DOCUMENT_NUMBER_PAGE * request.getPage()).limit(Constants.DOCUMENT_NUMBER_PAGE).iterator();
+
+                }
+                else{
+                    cursor = compounds.find(findDoc).sort(new Document("_id",1)).limit(Constants.DOCUMENT_NUMBER_PAGE).iterator();
+
+                }
+
+            }
+
+        }
+
+
+
+//        cursor = compounds.find().sort(new Document("_id",1)).iterator();
         while(cursor.hasNext()){
             Document doc = (Document) cursor.next();
             PropertyModal propertyModal = gson.fromJson(doc.toJson(),PropertyModal.class);
@@ -46,6 +90,7 @@ import static org.aurd.MongoService.reviews;
         getPropertiesResponse.setMessage("Properties are fetched successfully");
         getPropertiesResponse.setPropertyModals(arrayList);
         getPropertiesResponse.setStatus(true);
+        getPropertiesResponse.setCount(compoundCount);
         return getPropertiesResponse;
     }
 
