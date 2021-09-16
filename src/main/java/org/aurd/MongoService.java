@@ -66,11 +66,9 @@ public class MongoService {
         authCollection=mongoDatabase.getCollection("AuthCollection");
         adminCollection=mongoDatabase.getCollection("Admin");
         userPropertyCollection=mongoDatabase.getCollection("userPropertyCollection");
+        metaDataCollection = mongoDatabase.getCollection("metaData")
 
         authCollection.createIndex(Indexes.ascending("date"),new IndexOptions().expireAfter(3L, TimeUnit.MINUTES));
-        metaDataCollection = mongoDatabase.getCollection("metaData");
-
-
 
         final String s3Endpoint = "https://s3.wasabisys.com";
         final String region = "us-east-1";
