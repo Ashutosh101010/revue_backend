@@ -11,7 +11,7 @@ import java.util.ArrayList;
 
 import static org.aurd.MongoService.reviews;
 
-public class AdminReviewModal {
+public class    AdminReviewModal {
     @JsonAdapter(ObjectAdapter.class)
     String _id;
     String reviewerName;

@@ -17,7 +17,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.util.ArrayList;
 
-import static org.aurd.MongoService.compounds;
+import static org.aurd.MongoService.reviews;
 import static org.aurd.MongoService.reviews;
 
 @Path("admin/reviews")
@@ -34,13 +34,13 @@ public class GetReviewsController {
             findDoc.append("_id",new Document("$gt",new ObjectId(request.getLastObjectID())));
             if(request.getPageCount()>0)
             {
-                cursor =  compounds.find(findDoc).sort(new Document("_id",1)).
+                cursor =  reviews.find(findDoc).sort(new Document("_id",1)).
                         skip(Constants.DOCUMENT_NUMBER_PAGE * request.getPageCount()).
                         limit(Constants.DOCUMENT_NUMBER_PAGE).cursor();
 
             }
             else{
-                cursor =  compounds.find(findDoc).sort(new Document("_id",1)).
+                cursor =  reviews.find(findDoc).sort(new Document("_id",1)).
                         limit(Constants.DOCUMENT_NUMBER_PAGE).cursor();
 
             }
@@ -54,24 +54,24 @@ public class GetReviewsController {
             {
                 if(request.getPageCount()>0)
                 {
-                    cursor=compounds.find().sort(new Document("_id",1)).
+                    cursor=reviews.find().sort(new Document("_id",1)).
                             skip(Constants.DOCUMENT_NUMBER_PAGE * request.getPageCount()).limit(Constants.DOCUMENT_NUMBER_PAGE).iterator();
                 }
                 else{
-                    cursor = compounds.find().sort(new Document("_id",1)).
+                    cursor = reviews.find().sort(new Document("_id",1)).
                             limit(Constants.DOCUMENT_NUMBER_PAGE).iterator();
 
                 }
             }else {
                 if(request.getPageCount()>0)
                 {
-                    cursor = compounds.find(findDoc).sort(new Document("_id",1)).
+                    cursor = reviews.find(findDoc).sort(new Document("_id",1)).
                             skip(Constants.DOCUMENT_NUMBER_PAGE * request.getPageCount()).
                             limit(Constants.DOCUMENT_NUMBER_PAGE).iterator();
 
                 }
                 else{
-                    cursor = compounds.find(findDoc).sort(new Document("_id",1)).
+                    cursor = reviews.find(findDoc).sort(new Document("_id",1)).
                             limit(Constants.DOCUMENT_NUMBER_PAGE).iterator();
 
                 }
@@ -107,7 +107,7 @@ public class GetReviewsController {
 
 
         GetReviewResponse getReviewResponse = new GetReviewResponse();
-        getReviewResponse.setMessage("Get User Successfully");
+        getReviewResponse.setMessage("Get Reviews Successfully");
         getReviewResponse.setErrorCode(0);
         getReviewResponse.setAdminReviewModals(arrayList);
         getReviewResponse.setStatus(true);

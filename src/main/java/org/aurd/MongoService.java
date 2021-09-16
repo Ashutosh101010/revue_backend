@@ -66,7 +66,7 @@ public class MongoService {
         authCollection=mongoDatabase.getCollection("AuthCollection");
         adminCollection=mongoDatabase.getCollection("Admin");
         userPropertyCollection=mongoDatabase.getCollection("userPropertyCollection");
-        metaDataCollection = mongoDatabase.getCollection("metaData")
+        metaDataCollection = mongoDatabase.getCollection("metaData");
 
         authCollection.createIndex(Indexes.ascending("date"),new IndexOptions().expireAfter(3L, TimeUnit.MINUTES));
 
