@@ -10,6 +10,15 @@ public class GetReviewResponse {
     String message;
     String errorDescription;
     ArrayList<AdminReviewModal> adminReviewModals;
+    int totalReviews;
+
+    public int getTotalReviews() {
+        return totalReviews;
+    }
+
+    public void setTotalReviews(int totalReviews) {
+        this.totalReviews = totalReviews;
+    }
 
     public ArrayList<AdminReviewModal> getAdminReviewModals() {
         return adminReviewModals;

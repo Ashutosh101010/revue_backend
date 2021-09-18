@@ -2,7 +2,7 @@ package org.aurd.Admin.adminModal.request;
 
 public class GetReviewRequest {
 
-    String reviewStatus;
+    int status;
     int pageCount;
     String lastObjectID;
 
@@ -22,11 +22,11 @@ public class GetReviewRequest {
         this.pageCount = pageCount;
     }
 
-    public String getReviewStatus() {
-        return reviewStatus;
+    public int getStatus() {
+        return status;
     }
 
-    public void setReviewStatus(String reviewStatus) {
-        this.reviewStatus = reviewStatus;
+    public void setStatus(int status) {
+        this.status = status;
     }
 }

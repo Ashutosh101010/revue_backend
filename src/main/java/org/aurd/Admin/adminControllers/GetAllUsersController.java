@@ -40,6 +40,8 @@ public class GetAllUsersController {
         }
         while(cursor.hasNext()){
             Document doc = (Document) cursor.next();
+
+
             UserModal userModal = gson.fromJson(doc.toJson(),UserModal.class);
             int count = Math.toIntExact(reviews.countDocuments(new Document("userID", userModal.get_id())));
             userModal.setReviewCount(count);
@@ -74,6 +76,11 @@ public class GetAllUsersController {
         }
         while(cursor.hasNext()){
             Document doc = (Document) cursor.next();
+            if(!doc.containsKey("status"))
+            {
+                doc.append("status",true);
+                System.out.println("status is updated to true");
+            }
             UserModal userModal = gson.fromJson(doc.toJson(),UserModal.class);
             int count = Math.toIntExact(reviews.countDocuments(new Document("userID", userModal.get_id())));
             userModal.setReviewCount(count);
@@ -103,10 +110,23 @@ public class GetAllUsersController {
         MongoCursor cursor;
         int usersCount;
         String search = request.getSearch();
+        System.out.println("status is "+ status );
+
+//        Document isExistDoc = new Document("status", "$exist");
+//        Document existDocument = new Document();
+
         if(!status)
         {
             findDoc.append("status",status);
+            System.out.println("status is "+ status );
         }
+        else{
+            ArrayList orList = new ArrayList();
+            orList.add(new Document("status",status));
+            orList.add(new Document("status",new Document("$exists",false)));
+            findDoc.append("$or",orList);
+        }
+
 
         if(search!=null){
             ArrayList orList = new ArrayList();
@@ -120,7 +140,6 @@ public class GetAllUsersController {
 
         if(findDoc.isEmpty())
         {
-            System.out.println("find doc is empty");
             if(request.getPageCount()>0)
             {
                 cursor=users.find().sort(new Document("_id",1)).skip(Constants.DOCUMENT_NUMBER_PAGE * request.getPageCount()).limit(Constants.DOCUMENT_NUMBER_PAGE).iterator();
@@ -144,6 +163,11 @@ public class GetAllUsersController {
         }
         while(cursor.hasNext()){
             Document doc = (Document) cursor.next();
+            if(!doc.containsKey("status"))
+            {
+                doc.append("status",true);
+                System.out.println("status is updated to true");
+            }
             UserModal userModal = gson.fromJson(doc.toJson(),UserModal.class);
             int count = Math.toIntExact(reviews.countDocuments(new Document("userID", userModal.get_id())));
             userModal.setReviewCount(count);

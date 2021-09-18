@@ -30,55 +30,38 @@ public class GetReviewsController {
         Gson gson = new Gson();
         Document findDoc = new Document();
         MongoCursor cursor;
-        if(request.getLastObjectID()!=null && !request.getLastObjectID().isEmpty()){
-            findDoc.append("_id",new Document("$gt",new ObjectId(request.getLastObjectID())));
+        if(request.getStatus()!=10){
+            findDoc.append("status", request.getStatus());
+        }
+//        cursor = reviews.find(findDoc).sort(new Document("_id",1)).cursor();
+        if(findDoc.isEmpty())
+        {
             if(request.getPageCount()>0)
             {
-                cursor =  reviews.find(findDoc).sort(new Document("_id",1)).
-                        skip(Constants.DOCUMENT_NUMBER_PAGE * request.getPageCount()).
-                        limit(Constants.DOCUMENT_NUMBER_PAGE).cursor();
-
+                cursor=reviews.find().sort(new Document("_id",1)).
+                        skip(Constants.DOCUMENT_NUMBER_PAGE_REVIEWS * request.getPageCount()).limit(Constants.DOCUMENT_NUMBER_PAGE_REVIEWS).iterator();
             }
             else{
-                cursor =  reviews.find(findDoc).sort(new Document("_id",1)).
-                        limit(Constants.DOCUMENT_NUMBER_PAGE).cursor();
-
-            }
-        }else {
-            if(request.getReviewStatus()!=null && !request.getReviewStatus().isEmpty()){
-//            findDoc.append("_id",new Document("$gt",new ObjectId(request.getReviewStatus())));
-                findDoc.append("status", request.getReviewStatus());
-                cursor = reviews.find(findDoc).sort(new Document("_id",1)).cursor();
-            }
-            if(findDoc.isEmpty())
-            {
-                if(request.getPageCount()>0)
-                {
-                    cursor=reviews.find().sort(new Document("_id",1)).
-                            skip(Constants.DOCUMENT_NUMBER_PAGE * request.getPageCount()).limit(Constants.DOCUMENT_NUMBER_PAGE).iterator();
-                }
-                else{
-                    cursor = reviews.find().sort(new Document("_id",1)).
-                            limit(Constants.DOCUMENT_NUMBER_PAGE).iterator();
-
+                cursor = reviews.find().sort(new Document("_id",1)).
+                        limit(Constants.DOCUMENT_NUMBER_PAGE_REVIEWS).iterator();
                 }
             }else {
                 if(request.getPageCount()>0)
                 {
                     cursor = reviews.find(findDoc).sort(new Document("_id",1)).
-                            skip(Constants.DOCUMENT_NUMBER_PAGE * request.getPageCount()).
-                            limit(Constants.DOCUMENT_NUMBER_PAGE).iterator();
+                            skip(Constants.DOCUMENT_NUMBER_PAGE_REVIEWS * request.getPageCount()).
+                            limit(Constants.DOCUMENT_NUMBER_PAGE_REVIEWS).iterator();
 
                 }
                 else{
                     cursor = reviews.find(findDoc).sort(new Document("_id",1)).
-                            limit(Constants.DOCUMENT_NUMBER_PAGE).iterator();
+                            limit(Constants.DOCUMENT_NUMBER_PAGE_REVIEWS).iterator();
 
                 }
 
             }
 
-        }
+
 
 
 //        if(request.getReviewStatus()!=null && !request.getReviewStatus().isEmpty()){
@@ -105,8 +88,11 @@ public class GetReviewsController {
 
 
 
+        int totalReviews = Math.toIntExact(reviews.countDocuments(findDoc));
+
 
         GetReviewResponse getReviewResponse = new GetReviewResponse();
+        getReviewResponse.setTotalReviews(totalReviews);
         getReviewResponse.setMessage("Get Reviews Successfully");
         getReviewResponse.setErrorCode(0);
         getReviewResponse.setAdminReviewModals(arrayList);
