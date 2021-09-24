@@ -71,7 +71,14 @@ public class RegisterController {
                 update.append("token",token);
                 update.append("verified",false);
                 users.findOneAndUpdate(new Document("_id",us.get("_id")),new Document("$set",update));
+                try{
                 mailer.send(Mail.withText(registerRequest.getEmail(),Constants.GMAIL_SUBJECT,"Please click below to verify your email \n https://revue-app.com/#/verifyEmail/"+token+"/"+us.get("_id").toString()));
+             }catch (Exception e)
+                {
+
+                    e.printStackTrace();
+                    System.out.println(e.getMessage());
+                }
 //                new Mailer(registerRequest.getEmail(),us.get("_id").toString(),token).run();
                 RegisterResponse registerResponse = new RegisterResponse();
                 registerResponse.setStatus(Constants.STATUS_SUCCESS);
@@ -87,8 +94,14 @@ public class RegisterController {
             doc.append("token", token);
             doc.append("verified",false);
             String id=users.insertOne(doc).getInsertedId().asObjectId().getValue().toHexString();
-            mailer.send(Mail.withText(registerRequest.getEmail(),Constants.GMAIL_SUBJECT,"Please click below to verify your email \n https://revue-app.com/#/verifyEmail/"+token+"/"+id));
+          try {
+              mailer.send(Mail.withText(registerRequest.getEmail(), Constants.GMAIL_SUBJECT, "Please click below to verify your email \n https://revue-app.com/#/verifyEmail/" + token + "/" + id));
+          }catch (Exception e)
+          {
 
+              e.printStackTrace();
+              System.out.println(e.getMessage());
+          }
 
             RegisterResponse registerResponse = new RegisterResponse();
             registerResponse.setStatus(Constants.STATUS_SUCCESS);

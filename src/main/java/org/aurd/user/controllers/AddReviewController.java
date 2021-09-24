@@ -10,6 +10,7 @@ import com.amazonaws.services.s3.model.ObjectMetadata;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mongodb.client.gridfs.GridFSUploadStream;
+import org.aurd.user.constant.Constants;
 import org.aurd.user.modal.entity.ReviewModal;
 import org.aurd.user.modal.request.AddReviewRequest;
 import org.aurd.user.modal.response.AddReviewResponse;
@@ -93,7 +94,7 @@ try {
 
 
     // General bucket information
-    final String bucketName = "revue";
+    final String bucketName = Constants.BUCKET_NAME;
 
 
     // Upload object to bucket

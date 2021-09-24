@@ -63,6 +63,7 @@ public class Constants {
     public static String GMAIL_PASSWORD="R3vu3app2020";
 
     public static String GMAIL_SUBJECT="AUTHENTICATION";
+    public static String BUCKET_NAME="revueapp";
 
 
 

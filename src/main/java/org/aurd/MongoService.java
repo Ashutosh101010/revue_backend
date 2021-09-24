@@ -52,7 +52,8 @@ public class MongoService {
         System.out.println("start");
 
 //        mongoClient = new MongoClient(new MongoClientURI("mongodb://ashutosh:Ashutosh96@94.237.121.70:27017/test?authSource=admin&readPreference=primary&appname=MongoDB%20Compass&ssl=false"));
-        mongoDatabase = mongoClient.getDatabase("RevueStage");
+        mongoDatabase = mongoClient.getDatabase("Revue");
+//        mongoDatabase = mongoClient.getDatabase("RevueStage");
         users = mongoDatabase.getCollection("Users");
         compounds = mongoDatabase.getCollection("Compounds");
         compounds.createIndex(new Document("position","2dsphere"));
@@ -73,9 +74,11 @@ public class MongoService {
         final String s3Endpoint = "https://s3.wasabisys.com";
         final String region = "us-east-1";
 
+
         AWSCredentialsProvider credentials =
                 new AWSStaticCredentialsProvider(
-                        new BasicAWSCredentials("RO3PDA6CRJSQC4JH65QH", "dtB4aV9tharNtWaW2eaZMK08zCzqHlleBMvlmRof"));
+//                        new BasicAWSCredentials("RO3PDA6CRJSQC4JH65QH", "dtB4aV9tharNtWaW2eaZMK08zCzqHlleBMvlmRof"));
+                        new BasicAWSCredentials("DCXZFNKFOJNW7CDJHRDB", "dZFWGo4su4ObUp1qS6E66hikzSUTc1iBXojaBAVo"));
 
          s3 = AmazonS3ClientBuilder.standard()
                 .withEndpointConfiguration(new

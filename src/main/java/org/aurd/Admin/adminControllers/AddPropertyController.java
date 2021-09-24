@@ -66,7 +66,7 @@ public class AddPropertyController {
 
 
 
-            final String bucketName = "revue";
+            final String bucketName = Constants.BUCKET_NAME;
 
             CompoundModal compoundModal = new CompoundModal();
             ArrayList<String> imagesList = new ArrayList();

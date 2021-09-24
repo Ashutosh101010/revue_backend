@@ -1,11 +1,14 @@
 package org.aurd.user.controllers;
 
 
+import io.quarkus.mailer.Mail;
+import io.quarkus.mailer.Mailer;
 import org.aurd.user.constant.Constants;
 import org.aurd.user.modal.request.SendOtpRequest;
 import org.aurd.user.modal.response.SendOtpResponse;
 import org.bson.Document;
 
+import javax.inject.Inject;
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.Session;
@@ -29,6 +32,9 @@ import static org.aurd.MongoService.authCollection;
 @Path("/sendOtp")
 public class SendOtpController {
 
+    @Inject
+    Mailer mailer;
+
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
@@ -42,7 +48,9 @@ public class SendOtpController {
 
         String messageBody="Your Otp is "+otp;
         String[] mail={request.getEmail()};
-        sendFromGMail(Constants.GMAIL_USER_NAME,Constants.GMAIL_PASSWORD, mail,Constants.GMAIL_SUBJECT,messageBody);
+        mailer.send(Mail.withText(request.getEmail(),Constants.GMAIL_SUBJECT,messageBody));
+//
+//        sendFromGMail(Constants.GMAIL_USER_NAME,Constants.GMAIL_PASSWORD, mail,Constants.GMAIL_SUBJECT,messageBody);
         authCollection.insertOne(document);
 
         SendOtpResponse response=new SendOtpResponse();

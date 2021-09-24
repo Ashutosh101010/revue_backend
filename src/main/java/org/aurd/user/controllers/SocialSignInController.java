@@ -80,6 +80,8 @@ public class SocialSignInController {
                 user.append("firstname",request.getFirstname());
                 user.append("email",request.getEmail());
                 user.append("type",request.isType());
+                user.append("verified",true);
+                user.append("status",true);
                 users.insertOne(user);
                 FindOneAndUpdateOptions options = new FindOneAndUpdateOptions();
                 options.returnDocument(ReturnDocument.AFTER);
