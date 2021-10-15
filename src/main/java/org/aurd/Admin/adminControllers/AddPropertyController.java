@@ -8,6 +8,7 @@ import org.aurd.Admin.adminModal.request.AddCompoundResponse;
 import org.aurd.Admin.adminModal.response.AddPropertyResponse;
 import org.aurd.user.constant.Constants;
 import org.aurd.user.modal.entity.CompoundModal;
+import org.aurd.user.modal.entity.Position;
 import org.aurd.user.modal.entity.ReviewModal;
 import org.aurd.user.modal.response.AddReviewResponse;
 import org.bson.Document;
@@ -55,6 +56,7 @@ public class AddPropertyController {
             compoundRequest.setDesign(0);
             compoundRequest.setRating(0);
             compoundRequest.setAmenities(input.get("amenities").get(0).getBodyAsString());
+
 //            compoundRequest.setPosition(in);
 
             System.out.println(input.get("amenities").get(0).getBodyAsString());
@@ -116,6 +118,17 @@ public class AddPropertyController {
             compoundModal.setCompoundname(compoundRequest.getCompoundname());
             compoundModal.setAddress(compoundRequest.getAddress());
             compoundModal.setAmenities(pList);
+            compoundModal.setDescription(compoundRequest.getDescription());
+            compoundModal.setCategory(compoundRequest.getCategory());
+
+            ArrayList<Double> coordinates=new ArrayList<>();
+            coordinates.add(Double.valueOf(input.get("latitude").get(0).getBodyAsString()));
+            coordinates.add(Double.valueOf(input.get("longitude").get(0).getBodyAsString()));
+
+            Position position=new Position();
+            position.setCoordinates(coordinates);
+            position.setType("Point");
+
 
             Document document = Document.parse(new Gson().toJson(compoundModal));
             compounds.insertOne(document);
@@ -128,7 +141,7 @@ public class AddPropertyController {
 
         }
         catch (Exception error){
-            System.out.println(error);
+            error.printStackTrace();
         }
         return  addPropertyResponse;
     }

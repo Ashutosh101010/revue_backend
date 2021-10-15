@@ -55,6 +55,7 @@ public class AddCompoundRequest {
     JSONArray position;
 
 
+
     public JSONArray getPosition() {
         return position;
     }

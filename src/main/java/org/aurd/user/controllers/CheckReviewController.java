@@ -26,7 +26,11 @@ public class CheckReviewController {
         Document find=new Document();
 
         find.append("userID",request.getUserId());
-//        find.append("compoundID",request.getCompoundId());
+        if(request.getCompoundId()!=null && !request.getCompoundId().isEmpty())
+        {
+            find.append("compoundID",request.getCompoundId());
+        }
+
 
        MongoCursor cursor= reviews.find(find).cursor();
        CheckReviewResponse response =new CheckReviewResponse();
